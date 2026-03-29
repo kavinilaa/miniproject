@@ -1,0 +1,453 @@
+.pf-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.pf-hero {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  border: 1px solid #315a6c;
+  background:
+    radial-gradient(circle at 88% 15%, rgba(245, 158, 11, 0.16), transparent 42%),
+    linear-gradient(140deg, #102733, #182239 65%, #0e2130);
+}
+
+.pf-kicker {
+  margin: 0;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 1.1px;
+  color: #8dd3ee;
+}
+
+.pf-title {
+  margin: 6px 0 2px;
+  font-size: 1.15rem;
+  color: #f8fafc;
+}
+
+.pf-subtitle {
+  margin: 0;
+  font-size: 0.84rem;
+  color: #b6d5e6;
+}
+
+.pf-progress {
+  min-width: 180px;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #cbe6f4;
+  font-size: 0.78rem;
+}
+
+.pf-progress strong {
+  font-size: 1.3rem;
+  color: #f8fafc;
+  line-height: 1;
+}
+
+.pf-progress-track {
+  height: 8px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.pf-progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #06b6d4, #f59e0b);
+  transition: width 0.3s ease;
+}
+
+.risk-banner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 18px;
+  border: 1px solid;
+  border-radius: 12px;
+  background: rgba(15, 24, 35, 0.48);
+}
+
+.risk-icon { font-size: 1.6rem; }
+
+.risk-label {
+  color: #8da8bb;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin: 0 0 2px;
+}
+
+.risk-value {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.bmi-box {
+  margin-left: auto;
+  text-align: right;
+}
+
+.pf-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.pf-tab {
+  border: 1px solid #2b4257;
+  border-radius: 12px;
+  background: linear-gradient(165deg, #152436, #121c2e);
+  color: #89a6bc;
+  padding: 10px 12px;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pf-tab:hover {
+  border-color: #3f7ea0;
+  transform: translateY(-1px);
+}
+
+.pf-tab.active {
+  border-color: #21b5b9;
+  box-shadow: 0 0 0 1px rgba(33, 181, 185, 0.2);
+  background:
+    radial-gradient(circle at 90% 15%, rgba(245, 158, 11, 0.2), transparent 48%),
+    linear-gradient(165deg, #1b3450, #162d49);
+  color: #e5f0f7;
+}
+
+.tab-step {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid #3b6175;
+  display: grid;
+  place-items: center;
+  font-size: 0.72rem;
+}
+
+.tab-icon {
+  font-size: 0.72rem;
+  letter-spacing: 0.6px;
+  border: 1px solid #35576f;
+  border-radius: 6px;
+  padding: 2px 6px;
+}
+
+.tab-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tab-text strong {
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.tab-text small {
+  font-size: 0.72rem;
+  color: #84a2b8;
+}
+
+.pf-body {
+  min-height: 280px;
+  border: 1px solid #273b4e;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #111a2a, #101827);
+  padding: 16px;
+}
+
+.pf-body-head {
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #23384b;
+}
+
+.pf-body-head h4 {
+  margin: 0;
+  color: #dbebf5;
+  font-size: 1rem;
+}
+
+.pf-body-head p {
+  margin: 4px 0 0;
+  color: #8ba8bc;
+  font-size: 0.82rem;
+}
+
+.pf-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.pf-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pf-field label {
+  color: #9cc3d8;
+  font-size: 0.8rem;
+  letter-spacing: 0.25px;
+}
+
+.req { color: #fb7185; margin-left: 3px; }
+
+.pf-field input,
+.pf-field select {
+  background: #0f1a29;
+  border: 1px solid #2f4558;
+  border-radius: 10px;
+  color: #dbe7f0;
+  padding: 10px 12px;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  font-family: inherit;
+}
+
+.pf-field input:focus,
+.pf-field select:focus {
+  border-color: #19b1bc;
+  box-shadow: 0 0 0 3px rgba(25, 177, 188, 0.12);
+}
+
+.pf-field select option { background: #0f1a29; }
+
+.bmi-display {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: rgba(6, 182, 212, 0.1);
+  border: 1px solid #23667d;
+  border-radius: 10px;
+  color: #b6dcec;
+  font-size: 0.88rem;
+}
+
+.pf-checks {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #0f1a29;
+  border: 1px solid #263e53;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.check-row:hover { border-color: #19b1bc; }
+
+.check-row input[type="checkbox"] {
+  width: 17px;
+  height: 17px;
+  accent-color: #14b8a6;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.check-label {
+  color: #dbe7f0;
+  font-size: 0.9rem;
+  flex: 1;
+}
+
+.high-risk-tag {
+  background: rgba(251, 113, 133, 0.16);
+  color: #fb7185;
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(251, 113, 133, 0.25);
+}
+
+.clinical-hints {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid #71521f;
+  border-radius: 10px;
+  margin-top: 2px;
+}
+
+.clinical-hints p {
+  color: #d6c9b0;
+  font-size: 0.82rem;
+  margin: 0;
+}
+
+.pf-symptoms { display: flex; flex-direction: column; gap: 14px; }
+
+.symptoms-hint {
+  color: #8ba8bc;
+  font-size: 0.84rem;
+  margin: 0;
+}
+
+.symptom-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.symptom-chip {
+  padding: 8px 14px;
+  background: #0f1a29;
+  border: 1px solid #2c475d;
+  border-radius: 999px;
+  color: #a9c1d2;
+  font-size: 0.84rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.symptom-chip:hover {
+  border-color: #1ab2bd;
+  color: #d8eef6;
+}
+
+.symptom-chip.selected {
+  background: rgba(26, 178, 189, 0.14);
+  border-color: #1ab2bd;
+  color: #dff7fa;
+  font-weight: 600;
+}
+
+.selected-symptoms {
+  padding: 10px 12px;
+  background: rgba(26, 178, 189, 0.09);
+  border: 1px solid #28586d;
+  border-radius: 10px;
+  color: #aed8e8;
+  font-size: 0.82rem;
+}
+
+.selected-symptoms p {
+  margin: 0;
+}
+
+.pf-footer {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pf-nav {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-save {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(95deg, #0ea5b7, #f59e0b);
+  color: #0f172a;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.2s;
+}
+
+.btn-save:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.error-msg {
+  color: #fb7185;
+  font-size: 0.84rem;
+  background: rgba(251, 113, 133, 0.1);
+  border: 1px solid rgba(251, 113, 133, 0.24);
+  padding: 10px 12px;
+  border-radius: 10px;
+}
+
+.success-msg {
+  color: #34d399;
+  font-size: 0.84rem;
+  background: rgba(52, 211, 153, 0.1);
+  border: 1px solid rgba(52, 211, 153, 0.24);
+  padding: 10px 12px;
+  border-radius: 10px;
+}
+
+.btn-primary {
+  padding: 10px 18px;
+  background: linear-gradient(95deg, #0ea5b7, #0891b2);
+  color: #e6f8fb;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-primary:hover { opacity: 0.9; }
+
+.btn-secondary {
+  padding: 10px 18px;
+  background: transparent;
+  border: 1px solid #2f5566;
+  border-radius: 10px;
+  color: #9ccad9;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-secondary:hover { background: #142334; }
+
+@media (max-width: 980px) {
+  .pf-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  .pf-hero {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .pf-progress {
+    min-width: 100%;
+  }
+
+  .pf-grid { grid-template-columns: 1fr; }
+
+  .pf-tabs { grid-template-columns: 1fr; }
+
+  .pf-tab { padding: 9px 10px; }
+}
