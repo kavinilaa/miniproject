@@ -12,7 +12,6 @@ import {
   listPatientEventsById,
   listPatientRecords,
   predictPolyp,
-  predictVideo,
   savePatientRecord,
   segmentPolyp,
   setDomain,
@@ -25,7 +24,6 @@ const MENU_ITEMS = [
   { id: "predict", label: "Predict" },
   { id: "classify", label: "Classify" },
   { id: "segment", label: "Segment" },
-  { id: "video", label: "Video" },
   { id: "history", label: "Patient History" },
 ];
 
@@ -36,7 +34,6 @@ const PAGE_DESCRIPTIONS = {
   predict: "Run binary screening to detect whether a polyp is present in the uploaded colonoscopy image.",
   classify: "Run multi-class analysis to identify the likely polyp subtype.",
   segment: "Generate a segmentation mask to localize suspicious polyp regions.",
-  video: "Analyze a colonoscopy video frame-by-frame and summarize detections.",
   incremental: "Automatic learning is enabled in backend. Manual update is optional.",
   domain: "Domain adaptation is backend-controlled for simplified workflow.",
   history: "Review recent actions and outcomes for audit and follow-up.",
@@ -52,13 +49,11 @@ export default function Dashboard() {
   const [predictImage, setPredictImage] = useState(null);
   const [classifyImage, setClassifyImage] = useState(null);
   const [segmentImage, setSegmentImage] = useState(null);
-  const [videoFile, setVideoFile] = useState(null);
   const [incImage, setIncImage] = useState(null);
 
   const [predicting, setPredicting] = useState(false);
   const [classifying, setClassifying] = useState(false);
   const [segmenting, setSegmenting] = useState(false);
-  const [videoPredicting, setVideoPredicting] = useState(false);
   const [incSubmitting, setIncSubmitting] = useState(false);
   const [fineTuning, setFineTuning] = useState(false);
   const [settingDomain, setSettingDomain] = useState(false);
@@ -66,7 +61,6 @@ export default function Dashboard() {
   const [predictError, setPredictError] = useState("");
   const [classifyError, setClassifyError] = useState("");
   const [segmentError, setSegmentError] = useState("");
-  const [videoError, setVideoError] = useState("");
   const [incError, setIncError] = useState("");
   const [fineTuneError, setFineTuneError] = useState("");
   const [domainError, setDomainError] = useState("");
@@ -74,7 +68,6 @@ export default function Dashboard() {
   const [predictResult, setPredictResult] = useState(null);
   const [classifyResult, setClassifyResult] = useState(null);
   const [segmentResult, setSegmentResult] = useState(null);
-  const [videoResult, setVideoResult] = useState(null);
   const [incResult, setIncResult] = useState(null);
   const [fineTuneResult, setFineTuneResult] = useState(null);
   const [domainResult, setDomainResult] = useState(null);
@@ -244,25 +237,6 @@ export default function Dashboard() {
     }
   }
 
-  async function onPredictVideo() {
-    setVideoError("");
-    setVideoPredicting(true);
-    try {
-      if (!videoFile) throw new Error("Upload video in Video page.");
-      const form = new FormData();
-      form.append("video", videoFile);
-      appendClinicalData(form);
-      const data = await predictVideo(form);
-      setVideoResult(data);
-      addHistory("Video", data.summary || "Video analysis completed");
-      await loadPatientEvents();
-    } catch (err) {
-      setVideoError(err.message || "Video prediction failed.");
-    } finally {
-      setVideoPredicting(false);
-    }
-  }
-
   async function onIncrementalUpdate() {
     setIncError("");
     setIncSubmitting(true);
@@ -404,7 +378,8 @@ export default function Dashboard() {
           media,
           counts: { events: events.length, media: media.length },
         });
-        setViewPatientError("Using compatibility mode: full profile endpoint is unavailable on current backend instance.");
+        // Profile loaded successfully via fallback method - no error to report
+        setViewPatientError("");
       } catch (fallbackErr) {
         setViewPatientProfile(null);
         setViewPatientError(fallbackErr.message || err.message || "Unable to load patient profile.");
@@ -430,6 +405,62 @@ export default function Dashboard() {
             </div>
           ) : (
             <>
+              {recentDbEvents.length > 0 && (
+                <div className="patient-status-section" style={{ 
+                  borderLeft: "4px solid #8b5cf6", 
+                  backgroundColor: "#faf5ff", 
+                  padding: "16px",
+                  borderRadius: "8px"
+                }}>
+                  <h4 className="section-title" style={{ color: "#8b5cf6", marginBottom: "12px" }}>Latest Analysis Result</h4>
+                  {(() => {
+                    const latest = recentDbEvents[0];
+                    const isPolyp = latest.summary?.toLowerCase().includes("polyp detected");
+                    const isNegative = latest.summary?.toLowerCase().includes("no polyp");
+                    const resultColor = isPolyp ? "#dc2626" : isNegative ? "#059669" : "#d97706";
+                    const bgColor = isPolyp ? "#fef2f2" : isNegative ? "#f0fdf4" : "#fffbeb";
+                    
+                    return (
+                      <div style={{ 
+                        borderLeft: `4px solid ${resultColor}`, 
+                        paddingLeft: "16px", 
+                        marginBottom: "12px",
+                        backgroundColor: bgColor,
+                        borderRadius: "6px",
+                        padding: "12px 12px 12px 16px"
+                      }}>
+                        <div style={{ marginBottom: "8px" }}>
+                          <span style={{ 
+                            fontSize: "11px", 
+                            color: "#8b5cf6", 
+                            textTransform: "uppercase", 
+                            fontWeight: "700",
+                            letterSpacing: "0.5px"
+                          }}>
+                            {latest.action}
+                          </span>
+                        </div>
+                        <div style={{ 
+                          fontSize: "18px", 
+                          fontWeight: "700", 
+                          color: resultColor, 
+                          marginBottom: "6px"
+                        }}>
+                          {latest.summary}
+                        </div>
+                        <div style={{ 
+                          fontSize: "12px", 
+                          color: "#8b5cf6", 
+                          fontWeight: "500"
+                        }}>
+                          {latest.createdAt}
+                        </div>
+                      </div>
+                    );
+                  })()}
+                </div>
+              )}
+
               <div className="patient-status-section">
                 <h4 className="section-title">Demographics</h4>
                 <div className="overview-grid">
@@ -662,7 +693,7 @@ export default function Dashboard() {
               <div className="patient-status-section">
                 <h4 className="section-title">Patient Images & Media</h4>
                 {!viewPatientProfile.media?.length ? (
-                  <p className="muted-row">No media linked yet. Run Predict/Classify/Segment/Video for this patient.</p>
+                  <p className="muted-row">No media linked yet. Run Predict/Classify/Segment for this patient.</p>
                 ) : (
                   <div className="comparison-grid">
                     {viewPatientProfile.media.map((mediaItem, idx) => {
@@ -670,21 +701,22 @@ export default function Dashboard() {
                       const mediaUrl = rawUrl.startsWith("http://") || rawUrl.startsWith("https://")
                         ? rawUrl
                         : `${FLASK_BASE_URL}${rawUrl}`;
-                      const isVideo = String(mediaItem.path || "").toLowerCase().endsWith(".mp4");
+                      const itemPath = String(mediaItem.path || "").toLowerCase();
+                      const isImage = /\.(png|jpg|jpeg|webp|gif|bmp)$/i.test(itemPath);
                       return (
                         <div className="info-card" key={`${mediaItem.eventId}-${idx}`}>
                           <span className="info-label">{mediaItem.eventAction} | {mediaItem.kind}</span>
-                          {isVideo ? (
-                            <video controls style={{ width: "100%", borderRadius: 8, background: "#0b1220" }}>
-                              <source src={mediaUrl} type="video/mp4" />
-                            </video>
-                          ) : (
+                          {isImage ? (
                             <img
                               src={mediaUrl}
                               alt={mediaItem.kind}
                               className="heatmap-img"
                               onClick={() => openImagePreview(mediaUrl, `${mediaItem.eventAction} - ${mediaItem.kind}`)}
                             />
+                          ) : (
+                            <a href={mediaUrl} target="_blank" rel="noreferrer" className="btn-secondary" style={{ display: "inline-block", textAlign: "center" }}>
+                              Open media
+                            </a>
                           )}
                           <span className="muted-row" style={{ margin: 0 }}>{mediaItem.eventTime}</span>
                         </div>
@@ -877,30 +909,6 @@ export default function Dashboard() {
       );
     }
 
-    if (activeMenu === "video") {
-      return (
-        <div className="card">
-          <h3 className="card-title">Video Analysis</h3>
-          <p className="muted-row">{PAGE_DESCRIPTIONS.video}</p>
-          <input type="file" accept="video/*" onChange={(e) => setVideoFile(e.target.files?.[0] || null)} />
-          <div className="upload-actions">
-            <button className="btn-primary" onClick={onPredictVideo} disabled={videoPredicting}>Run Video Analysis</button>
-          </div>
-          {videoError && <p className="error-msg">{videoError}</p>}
-          {videoResult && (
-            <div className="result-panel">
-              <div className="overview-grid">
-                <Info label="Total Frames" value={String(videoResult.totalFrames)} />
-                <Info label="Sampled Frames" value={String(videoResult.sampledFrames)} />
-                <Info label="Polyp Frames" value={String(videoResult.polypFrames)} />
-                <Info label="Summary" value={videoResult.summary} />
-              </div>
-            </div>
-          )}
-        </div>
-      );
-    }
-
     if (activeMenu === "incremental") {
       return (
         <div className="card">
@@ -983,7 +991,6 @@ export default function Dashboard() {
     <div className="dash-wrapper">
       <aside className="sidebar">
         <div className="sidebar-logo">
-          <span>AI</span>
           <h2>Polyp Assist</h2>
         </div>
         <nav className="sidebar-nav">
